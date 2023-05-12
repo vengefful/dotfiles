@@ -1,27 +1,18 @@
-require "user.impatient"
-require "user.options"
-require "user.keymaps"
-require "user.plugins"
-require "user.autocommands"
-require "user.colorscheme"
-require "user.cmp"
-require "user.telescope"
-require "user.gitsigns"
-require "user.treesitter"
-require "user.autopairs"
-require "user.comment"
-require "user.nvim-tree"
-require "user.bufferline"
-require "user.lualine"
-require "user.toggleterm"
-require "user.project"
-require "user.illuminate"
-require "user.indentline"
-require "user.alpha"
-require "user.lsp"
-require "user.dap"
-require "user.luasnip"
-require "user.vimtex"
+require("config.options")
+require("config.lazy")
 
--- Load snippets from ~/.config/nvim/LuaSnip/
-require("luasnip.loaders.from_lua").load({paths = "~/.config/nvim/LuaSnip/"})
+if vim.fn.argc(-1) == 0 then
+	vim.api.nvim_create_autocmd("User", {
+		group = vim.api.nvim_create_augroup("ModernNeovim", { clear = true }),
+		pattern = "VeryLazy",
+		callback = function()
+			require("config.autocmds")
+			require("config.keymaps")
+			require("utils.contextmenu")
+		end,
+	})
+else
+	require("config.autocmds")
+	require("config.keymaps")
+	require("utils.contextmenu")
+end
