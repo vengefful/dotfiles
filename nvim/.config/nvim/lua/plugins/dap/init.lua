@@ -1,14 +1,15 @@
 local M = {
-  {
-    "mfussenegger/nvim-dap",
-    dependencies = {
-      { "rcarriga/nvim-dap-ui" },
-      { "theHamsta/nvim-dap-virtual-text" },
-      { "nvim-telescope/telescope-dap.nvim" },
-      { "jbyuki/one-small-step-for-vimkind" },
-      { "jay-babu/mason-nvim-dap.nvim" },
-      { "LiadOz/nvim-dap-repl-highlights", opts = {} },
-    },
+	{
+		"mfussenegger/nvim-dap",
+		dependencies = {
+			{ "rcarriga/nvim-dap-ui" },
+			{ "theHamsta/nvim-dap-virtual-text" },
+			{ "nvim-telescope/telescope-dap.nvim" },
+			{ "jbyuki/one-small-step-for-vimkind" },
+			{ "jay-babu/mason-nvim-dap.nvim" },
+			{ "mfussenegger/nvim-dap-python" },
+			{ "LiadOz/nvim-dap-repl-highlights", opts = {} },
+		},
   -- stylua: ignore
   keys = {
     { "<leader>dR", function() require("dap").run_to_cursor() end, desc = "Run to Cursor", },
@@ -32,39 +33,40 @@ local M = {
     { "<leader>dx", function() require("dap").terminate() end, desc = "Terminate", },
     { "<leader>du", function() require("dap").step_out() end, desc = "Step Out", },
   },
-    opts = {
-      setup = {
-        osv = function(_, _)
-          require("plugins.dap.lua").setup()
-        end,
-      },
-    },
-    config = function(plugin, opts)
-      require("nvim-dap-virtual-text").setup {
-        commented = true,
-      }
+		opts = {
+			setup = {
+				osv = function(_, _)
+					require("plugins.dap.lua").setup()
+					require("plugins.dap.python").setup()
+				end,
+			},
+		},
+		config = function(plugin, opts)
+			require("nvim-dap-virtual-text").setup({
+				commented = true,
+			})
 
-      local dap, dapui = require "dap", require "dapui"
-      dapui.setup {}
+			local dap, dapui = require("dap"), require("dapui")
+			dapui.setup({})
 
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				dapui.open()
+			end
+			dap.listeners.before.event_terminated["dapui_config"] = function()
+				dapui.close()
+			end
+			dap.listeners.before.event_exited["dapui_config"] = function()
+				dapui.close()
+			end
 
-      -- set up debugger
-      for k, _ in pairs(opts.setup) do
-        opts.setup[k](plugin, opts)
-      end
-    end,
-  },
-  --TODO: to configure
-  { "jay-babu/mason-nvim-dap.nvim", opts = {}, cmd = { "DapInstall", "DapUninstall" } },
+			-- set up debugger
+			for k, _ in pairs(opts.setup) do
+				opts.setup[k](plugin, opts)
+			end
+		end,
+	},
+	--TODO: to configure
+	{ "jay-babu/mason-nvim-dap.nvim", opts = {}, cmd = { "DapInstall", "DapUninstall" } },
 }
 
 return M

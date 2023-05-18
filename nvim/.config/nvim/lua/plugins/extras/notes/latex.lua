@@ -32,6 +32,10 @@ return {
 				},
 			}
 			vim.g.vimtex_view_method = "zathura_simple"
+			vim.g.vimtex_view_general_viewer = "zathura_simple"
+			vim.g.vimtex_quickfix_enabled = 0
+			vim.g.vimtex_compiler_progname = "nvr"
+			vim.g.vimtex_callback_progapth = "/usr/local/nvim"
 			vim.g.vimtex_fold_enabled = true
 			vim.g.vimtex_syntax_conceal = {
 				accents = 1,

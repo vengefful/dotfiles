@@ -11,6 +11,7 @@ opt.conceallevel = 0
 opt.confirm = true
 opt.cursorline = true
 opt.expandtab = true
+---@diagnostic disable-next-line: assign-type-mismatch
 opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 opt.foldcolumn = "1" -- '0' is not bad
 opt.foldenable = true
